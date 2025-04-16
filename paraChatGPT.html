@@ -1,0 +1,966 @@
+--- index.html ---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi Proyecto</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ProfitLab - Análisis Financiero Automatizado</title>
+  <!-- Importar Montserrat desde Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- Enlace a la hoja de estilos global -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="header-container">
+      <!-- Logo y nombre -->
+      <div class="logo">
+        <a href="index.html">
+          <img src="img/logo.png" alt="ProfitLab Logo">
+          <span>ProfitLab</span>
+        </a>
+      </div>
+      <!-- Enlaces Login y Registrarse -->
+      <div class="header-links">
+        <a href="login.html">Login</a>
+        <a href="registro.html">Registrarse</a>
+      </div>
+    </div>
+    <!-- Línea horizontal de acento -->
+    <hr class="accent-line">
+  </header>
+
+  <!-- --- SECCIÓN HERO --- -->
+  <section id="hero" class="section hero">
+    <div class="hero-container">
+      <!-- Columna Izquierda: Texto -->
+      <div class="hero-text">
+        <h1>¿Te cuesta seguir el rendimiento real de tus inversiones?</h1>
+        <h3>Bienvenido a <h2>ProfitLab</h2></h3>
+        <p>Empezá a administrar tu portafolio eficientemente</p>
+        <a href="suscripciones.html" class="btn">Suscribite ahora</a>
+        <div >* 14 dias de prueba gratis *</div>
+      </div>
+      <!-- Columna Derecha: Imagen de la app con efecto blur -->
+      <div class="hero-image-container">
+        <img src="img/app.png" alt="Vista de la App ProfitLab" class="hero-image">
+      </div>
+    </div>
+  </section>
+
+  <!-- --- SECCIÓN CARTEL DE PROMOCIÓN --- -->
+  <section id="promocion" class="section promocion">
+    <div class="promo-box">
+      <p class="promo-text">🔥 50% OFF por los primeros 2 meses</p>
+      <a href="suscripciones.html" target="_blank" class="btn promo-btn">Suscribirme</a>
+      <p class="promo-date">Con el codigo 50%OFF <span id="promoDate"></span></p>
+    </div>
+  </section>
+
+  <!-- --- SECCIÓN ACCESO A PROFITLAB --- -->
+  <section id="acceso" class="section acceso">
+    <div class="acceso-container">
+      <!-- Columna Izquierda: Texto descriptivo -->
+      <div class="acceso-text">
+        <h2>Activá tu acceso a ProfitLab</h2>
+        <p>Descubrí un sistema innovador que optimiza el análisis financiero para que puedas invertir sin complicaciones.</p>
+        <ul class="benefits-list">
+          <li>Interfaz intuitiva y moderna</li>
+          <li>Análisis automatizado de inversiones</li>
+          <li>Acceso a datos en tiempo real</li>
+          <li>Soporte especializado</li>
+        </ul>
+      </div>
+      <!-- Columna Derecha: Tarjeta elegante -->
+      <div class="acceso-card">
+        <h3>Pase mensual – ProfitLab</h3>
+        <p class="price">$12000 / mes</p>
+        <p class="trial">14 días de prueba gratis</p>
+        <a href="https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c938084963245b70196370c878302bf" target="_blank" class="btn">Elegir</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- --- SECCIÓN DIFERENCIALES --- -->
+  <section id="diferenciales" class="section diferenciales">
+    <h2>¿Por qué elegir ProfitLab?</h2>
+    <ul class="diferenciales-list">
+      <li>🇦🇷 Diseñado para Argentina: considera el tipo de cambio y comisiones de brokers locales</li>
+      <li>⚙️ Automatización avanzada con APIs</li>
+      <li>🎁 Video explicativo detallado</li>
+      <li>🧪 14 días de prueba para que lo conozcas</li>
+      <li>🔒 Pago seguro, acceso inmediato y soporte personalizado</li>
+    </ul>
+  </section>
+
+  <!-- --- SECCIÓN VIDEO EXPLICATIVO --- -->
+  <section id="video" class="section video">
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/ScMzIvxBSi4" title="Video explicativo ProfitLab" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <!-- --- FOOTER --- -->
+  <footer>
+    <div class="footer-social">
+      <a href="#" target="_blank">Instagram</a>
+      <a href="#" target="_blank">YouTube</a>
+      <a href="#" target="_blank">Twitter</a>
+    </div>
+    <p>© 2025 ProfitLab — Todos los derechos reservados</p>
+  </footer>
+
+  <!-- Enlace al archivo JavaScript -->
+  <script src="js/main.js"></script>
+</body>
+</html>
+
+<!-- registro.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ProfitLab - Registrarse</title>
+  <!-- Importar Montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- Estilos Globales y Específicos para Registro -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/registro.css">
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="header-container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="img/logo.png" alt="ProfitLab Logo">
+          <span>ProfitLab</span>
+        </a>
+      </div>
+      <div class="header-links">
+        <a href="login.html">Login</a>
+        <a href="registro.html">Registrarse</a>
+      </div>
+    </div>
+    <hr class="accent-line">
+  </header>
+
+  <!-- SECCIÓN REGISTRO -->
+  <section class="section registro-section">
+    <div class="form-container">
+      <h2>Registrarse</h2>
+      <form id="registerForm">
+        <!-- Campo: Nombre completo -->
+        <div class="form-group">
+          <label for="fullName">Nombre completo</label>
+          <input type="text" id="fullName" name="fullName" placeholder="Tu nombre completo" required>
+        </div>
+        <!-- Campo: Correo electrónico -->
+        <div class="form-group">
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+        </div>
+        <!-- Campo: Contraseña -->
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" name="password" placeholder="Mínimo 6 caracteres" required>
+        </div>
+        <!-- Campo: Confirmar contraseña -->
+        <div class="form-group">
+          <label for="confirmPassword">Confirmar contraseña</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repite tu contraseña" required>
+        </div>
+        <!-- Botón: Crear cuenta -->
+        <button type="submit" class="btn">Crear cuenta</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Script Específico para Registro -->
+  <script src="js/registro.js"></script>
+</body>
+</html>
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ProfitLab - Iniciar sesión</title>
+  <!-- Importar Montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- Estilos Globales y Específicos para Login -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="header-container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="img/logo.png" alt="ProfitLab Logo">
+          <span>ProfitLab</span>
+        </a>
+      </div>
+      <div class="header-links">
+        <a href="login.html">Login</a>
+        <a href="registro.html">Registrarse</a>
+      </div>
+    </div>
+    <hr class="accent-line">
+  </header>
+
+  <!-- SECCIÓN LOGIN -->
+  <section class="section login-section">
+    <div class="form-container">
+      <h2>Iniciar sesión</h2>
+      <form id="loginForm">
+        <!-- Campo: Correo electrónico -->
+        <div class="form-group">
+          <label for="loginEmail">Correo electrónico</label>
+          <input type="email" id="loginEmail" name="loginEmail" placeholder="tu@email">
+        </div>
+        <!-- Campo: Contraseña -->
+        <div class="form-group">
+          <label for="loginPassword">Contraseña</label>
+          <input type="password" id="loginPassword" name="loginPassword" placeholder="Tu contraseña">
+        </div>
+        <!-- Botón: Ingresar -->
+        <button type="submit" class="btn">Ingresar</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Script Específico para Login -->
+  <script src="js/login.js"></script>
+</body>
+</html>
+<!-- suscripciones.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ProfitLab - Suscripción</title>
+  <!-- Importar Montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- Estilos Globales y Específicos para Suscripciones -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/suscripciones.css">
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="header-container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="img/logo.png" alt="ProfitLab Logo">
+          <span>ProfitLab</span>
+        </a>
+      </div>
+      <div class="header-links">
+        <a href="login.html">Login</a>
+        <a href="registro.html">Registrarse</a>
+      </div>
+    </div>
+    <hr class="accent-line">
+  </header>
+
+  <!-- SECCIÓN SUSCRIPCIONES -->
+  <section class="section suscripciones-section">
+    <div class="subscription-card">
+      <h2>Suscripción</h2>
+      <p>Con ProfitLab, accedé a análisis financieros automatizados que optimizan tus inversiones de forma inteligente.</p>
+      <div class="form-group">
+        <label for="referral">Código de referido</label>
+        <input type="text" id="referral" placeholder="Ingresa tu código (opcional)">
+      </div>
+      <button id="subscribeBtn" class="btn">Suscribite y hacé tu prueba</button>
+      <p class="trial-text">14 días para probarlo gratis</p>
+    </div>
+  </section>
+
+  <!-- Script Específico para Suscripciones -->
+  <script src="js/suscripciones.js"></script>
+</body>
+</html>
+
+
+--- styles.css ---
+/* Código CSS */
+/* css/global.css */
+/* Reset y estilos globales comunes */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #1b1120, #3f1b58);
+    color: #fff;
+    line-height: 1.6;
+  }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  img {
+    max-width: 100%;
+    display: block;
+  }
+  
+  /* Estilos del Header */
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+  }
+  
+  .logo a {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  
+  .logo img {
+    height: 50px;
+    margin-right: 10px;
+  }
+  
+  .header-links a {
+    margin-left: 20px;
+    font-size: 1rem;
+    transition: color 0.3s;
+  }
+  
+  .header-links a:hover {
+    color: #C08CFF;
+  }
+  
+  .accent-line {
+    border: none;
+    height: 2px;
+    background-color: #C08CFF;
+    margin-top: 5px;
+  }
+  
+  /* Contenedores comunes para formularios */
+  .form-container {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 40px;
+    border-radius: 10px;
+    max-width: 450px;
+    margin: 100px auto 40px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  }
+  
+  .form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #C08CFF;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.3s;
+  }
+  
+  .form-group input:focus {
+    box-shadow: 0 0 5px rgba(192, 140, 255, 0.8);
+  }
+  
+  /* Botón global */
+  .btn {
+    display: inline-block;
+    padding: 12px 25px;
+    border-radius: 25px;
+    background-color: #333;
+    color: #fff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+  }
+  
+  .btn:hover {
+    background-color: #8a5eff;
+    transform: translateY(-2px);
+  }
+  
+  /* css/style.css */
+
+  /* ============================
+     Reset y Estilos Globales
+  ============================ */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #1b1120, #3f1b58);
+    color: #fff;
+    line-height: 1.6;
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  img {
+    max-width: 100%;
+    display: block;
+  }
+  
+  /* ============================
+     HEADER
+  ============================ */
+  header {
+    width: 100%;
+    background-color: #111;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+  }
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+  }
+  .logo a {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  .logo img {
+    height: 50px;
+    margin-right: 10px;
+  }
+  .header-links a {
+    margin-left: 20px;
+    font-size: 1rem;
+    color: #fff;
+    transition: color 0.3s;
+  }
+  .header-links a:hover {
+    color: #C08CFF;
+  }
+  /* Línea de acento */
+  .accent-line {
+    border: none;
+    height: 2px;
+    background-color: #C08CFF;
+  }
+  
+  /* ============================
+     SECCIÓN HERO
+  ============================ */
+  .section.hero {
+    padding-top: 100px;
+    padding-bottom: 60px;
+  }
+  .hero-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 60px;
+    flex-wrap: wrap;
+  }
+  .hero-text {
+    flex: 1;
+    min-width: 280px;
+    padding: 20px;
+    padding-top: -0px;
+    padding-left: 30px;
+  }
+  .hero-text h1 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+  
+  .hero-text h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #C08CFF;
+  }
+  .hero-text h3 {
+    font-size: 2.3rem;
+  }
+  .hero-text p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  .hero-image-container {
+    flex: 1;
+    min-width: 280px;
+    padding: 20px;
+    text-align: center;
+  }
+  .hero-image {
+    width: 100%;
+    max-width: 600px;
+    filter: blur(0px);
+    border-radius: 10px;
+    -webkit-filter: blur(0px);
+  }
+  .hero-text div {
+    font-size: 0.7rem;
+    margin-top: 5px;
+    margin-left: 23px;
+  }
+  
+  /* ============================
+     SECCIÓN PROMOCIÓN
+  ============================ */
+  .section.promocion {
+    text-align: center;
+    padding: 0px 20px;
+  }
+  .promo-box {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 40px;
+    border-radius: 10px;
+    display: inline-block;
+  }
+  .promo-text {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+  .promo-btn {
+    margin-bottom: 10px;
+  }
+  .promo-date {
+    font-size: 0.9rem;
+    color: #ccc;
+  }
+  
+  /* ============================
+     SECCIÓN ACCESO A PROFITLAB
+  ============================ */
+  .section.acceso {
+    padding: 60px 20px;
+  }
+  .acceso-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .acceso-text {
+    flex: 1;
+    min-width: 280px;
+    padding: 20px;
+  }
+  .acceso-text h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #C08CFF;
+  }
+  .acceso-text p {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+  }
+  .benefits-list {
+    list-style: disc;
+    margin-left: 20px;
+  }
+  .acceso-card {
+    flex: 1;
+    min-width: 280px;
+    background-color: #f9f9f9;
+    color: #333;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    text-align: center;
+    margin: 20px;
+  }
+  .acceso-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+  .acceso-card .price {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+  }
+  .acceso-card .trial {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+  }
+  
+  /* ============================
+     SECCIÓN DIFERENCIALES
+  ============================ */
+  .section.diferenciales {
+    padding: 60px 20px;
+    text-align: center;
+  }
+  .section.diferenciales h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #C08CFF;
+  }
+  .diferenciales-list {
+    list-style: none;
+    padding: 0;
+    display: inline-block;
+    text-align: left;
+  }
+  .diferenciales-list li {
+    font-size: 1.1rem;
+    margin: 8px 0;
+  }
+  
+  /* ============================
+     SECCIÓN VIDEO EXPLICATIVO
+  ============================ */
+  .section.video {
+    padding: 60px 20px;
+    text-align: center;
+  }
+  .video-container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+  }
+  .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  
+  /* ============================
+     FOOTER
+  ============================ */
+  footer {
+    background-color: #111;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+  }
+  .footer-social a {
+    margin: 0 10px;
+    color: #C08CFF;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+  }
+  .footer-social a:hover {
+    color: #fff;
+  }
+  
+  /* ============================
+     BOTONES Y TRANSICIONES
+  ============================ */
+  .btn {
+    display: inline-block;
+    padding: 12px 25px;
+    border-radius: 25px;
+    background-color: #333;
+    color: #fff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  .btn:hover {
+    background-color: #8a5eff;
+    transform: translateY(-2px);
+  }
+  
+  /* ============================
+     MEDIA QUERIES
+  ============================ */
+  @media (max-width: 768px) {
+    .hero-container, .acceso-container {
+      flex-direction: column;
+      text-align: center;
+    }
+    .header-container {
+      flex-direction: column;
+    }
+    .header-links {
+      margin-top: 10px;
+    }
+  }
+  /* css/registro.css */
+/* Estilos específicos para la página de registro */
+.registro-section {
+    padding: 80px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+  }
+  
+  .form-container {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 40px;
+    border-radius: 10px;
+    max-width: 450px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+  }
+  
+  .form-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #C08CFF;
+  }
+  
+  /* Inputs y botones ya definidos en global.css se heredan aquí */
+  
+  /* css/login.css */
+  /* Estilos específicos para la página de login */
+  .login-section {
+      padding: 80px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 80vh;
+    }
+    
+    .form-container {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 40px;
+      border-radius: 10px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    }
+    
+    .form-container h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      color: #C08CFF;
+    }
+    /* css/suscripciones.css */
+    /* Estilos específicos para la página de suscripciones */
+    .suscripciones-section {
+        padding: 80px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+      }
+      
+      .subscription-card {
+        background: #fff;
+        color: #333;
+        padding: 40px;
+        border-radius: 10px;
+        max-width: 500px;
+        width: 100%;
+        margin: 100px auto 40px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      }
+      
+      .subscription-card h2 {
+        margin-bottom: 20px;
+        color: #333;
+      }
+      
+      .subscription-card p {
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+        color: #555;
+      }
+      
+      .subscription-card .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+      }
+      
+      .subscription-card input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        transition: all 0.3s;
+      }
+      
+      .subscription-card input[type="text"]:focus {
+        box-shadow: 0 0 5px rgba(192, 140, 255, 0.8);
+      }
+      
+      .subscription-card .btn {
+        margin-bottom: 10px;
+      }
+      
+      .subscription-card .trial-text {
+        font-size: 0.9rem;
+        color: #777;
+      }
+          
+/* Más estilos... */
+
+--- script.js ---
+// Código JavaScript/* js/main.js */
+// Funciones globales para todas las páginas
+document.addEventListener('DOMContentLoaded', () => {
+  // Aplicar smooth scroll a enlaces internos
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetID = this.getAttribute('href').substr(1);
+      const target = document.getElementById(targetID);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  // Establecer la fecha actual en la promoción de index.html
+  const promoDateElem = document.getElementById('promoDate');
+  if (promoDateElem) {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const yyyy = today.getFullYear();
+    promoDateElem.textContent = `${dd}/${mm}/${yyyy}`;
+  }
+});
+
+/* js/registro.js */
+// Validación y mejoras interactivas para el formulario de registro
+document.addEventListener('DOMContentLoaded', () => {
+    const registerForm = document.getElementById('registerForm');
+  
+    // Añadir efecto de foco a los inputs
+    document.querySelectorAll('#registerForm input').forEach(input => {
+      input.addEventListener('focus', () => {
+        input.classList.add('input-focus');
+      });
+      input.addEventListener('blur', () => {
+        input.classList.remove('input-focus');
+      });
+    });
+  
+    // Validación del formulario de registro
+    registerForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const fullName = document.getElementById('fullName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+  
+      if (!fullName || !email || !password || !confirmPassword) {
+        alert('Por favor, complete todos los campos.');
+        return;
+      }
+      
+      // Validar formato de email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        alert('Ingrese un correo electrónico válido.');
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        alert('Las contraseñas no coinciden.');
+        return;
+      }
+      
+      // Simulación de registro exitoso
+      alert('Registro exitoso');
+      registerForm.reset();
+    });
+  });
+  /* js/login.js */
+// Validación y mejoras interactivas para el formulario de login
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('loginForm');
+  
+    // Añadir efecto de foco a los inputs del formulario de login
+    document.querySelectorAll('#loginForm input').forEach(input => {
+      input.addEventListener('focus', () => {
+        input.classList.add('input-focus');
+      });
+      input.addEventListener('blur', () => {
+        input.classList.remove('input-focus');
+      });
+    });
+  
+    // Validación del formulario de login
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+  
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+  
+      if (!email || !password) {
+        alert('Por favor, complete ambos campos.');
+        return;
+      }
+      
+      // Simulación de login exitoso
+      alert('Login exitoso');
+      loginForm.reset();
+    });
+  });
+  /* js/suscripciones.js */
+// Funcionalidad para redirigir según código de referido en la página de suscripciones
+document.addEventListener('DOMContentLoaded', () => {
+    const subscribeBtn = document.getElementById('subscribeBtn');
+  
+    subscribeBtn.addEventListener('click', () => {
+      const referralCode = document.getElementById('referral').value.trim().toUpperCase();
+      let redirectUrl = 'https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=default';
+  
+      // Asignar URL según código de referido
+      if (referralCode === 'PROFIT50') {
+        redirectUrl = 'https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=xxx123';
+      } else if (referralCode === 'AMIGOPLUS') {
+        redirectUrl = 'https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=yyy456';
+      }
+      
+      window.location.href = redirectUrl;
+    });
+  });
+  
+  // Lógica del proyecto
+});

@@ -1,0 +1,25 @@
+/* css/login.css */
+/* Estilos específicos para la página de login */
+.login-section {
+    padding: 80px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+  }
+  
+  .form-container {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 40px;
+    border-radius: 10px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+  }
+  
+  .form-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #C08CFF;
+  }
+  

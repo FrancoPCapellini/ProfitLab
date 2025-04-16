@@ -1,0 +1,122 @@
+/* css/global.css */
+/* Reset y estilos globales comunes */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #1b1120, #3f1b58);
+    color: #fff;
+    line-height: 1.6;
+  }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  img {
+    max-width: 100%;
+    display: block;
+  }
+  
+  /* Estilos del Header */
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+  }
+  
+  .logo a {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  
+  .logo img {
+    height: 50px;
+    margin-right: 10px;
+  }
+  
+  .header-links a {
+    margin-left: 20px;
+    font-size: 1rem;
+    transition: color 0.3s;
+  }
+  
+  .header-links a:hover {
+    color: #C08CFF;
+  }
+  
+  .accent-line {
+    border: none;
+    height: 2px;
+    background-color: #C08CFF;
+    margin-top: 5px;
+  }
+  
+  /* Contenedores comunes para formularios */
+  .form-container {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 40px;
+    border-radius: 10px;
+    max-width: 450px;
+    margin: 100px auto 40px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  }
+  
+  .form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #C08CFF;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.3s;
+  }
+  
+  .form-group input:focus {
+    box-shadow: 0 0 5px rgba(192, 140, 255, 0.8);
+  }
+  
+  /* Botón global */
+  .btn {
+    display: inline-block;
+    padding: 12px 25px;
+    border-radius: 25px;
+    background-color: #333;
+    color: #fff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+  }
+  
+  .btn:hover {
+    background-color: #8a5eff;
+    transform: translateY(-2px);
+  }
+  
