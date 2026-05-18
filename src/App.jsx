@@ -2,17 +2,17 @@ import React,{useState,useMemo,useEffect,useRef,useCallback}from'react';
 import{createClient}from'@supabase/supabase-js';
 import{LineChart,Line,BarChart,Bar,XAxis,YAxis,CartesianGrid,Tooltip as RT,Legend,ResponsiveContainer,ComposedChart,ReferenceLine,Area,AreaChart,Cell}from'recharts';
 import{TrendingUp,AlertTriangle,Download,Plus,Trash2,Users,DollarSign,Wallet,Target,Activity,Calendar,Megaphone,Sparkles,Briefcase,Layers,Copy,Eraser,GitCompare,Settings,FileJson,Upload,RefreshCw,CheckCircle2,Clock,XCircle,Info,ChevronRight,ChevronDown,Flag,Banknote,BarChart3,ListChecks,LogOut,CloudOff,Cloud,Save}from'lucide-react';
-
+ 
 const SUPABASE_URL='https://ugpegefiawvronngtdfs.supabase.co';
 const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVncGVnZWZpYXd2cm9ubmd0ZGZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMzA1MDcsImV4cCI6MjA5NDcwNjUwN30.FdS6Rl-B-hen7YBBormohIbyPG27sbmjrK24FKyUt7g';
 const supabase=createClient(SUPABASE_URL,SUPABASE_ANON);
-
+ 
 const MN=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const SMULT={conservador:0.6,base:1.0,optimista:1.45};
 const SK='profitlab_v3';
 const HORIZONS=[{v:6,l:'6 meses'},{v:12,l:'12 meses'},{v:18,l:'18 meses'},{v:24,l:'24 meses'},{v:36,l:'36 meses'}];
 const PS_LABELS={pendiente:'Pendiente',aprobado:'Aprobado',pagado:'Pagado',revision:'En revisión',cancelado:'Cancelado'};
-
+ 
 function addMo(y,m,d){const t=y*12+m+d;return{year:Math.floor(t/12),month:t%12};}
 function mLabel(sy,sm,o){const{year,month}=addMo(sy,sm,o);return`${MN[month]} '${String(year).slice(2)}`;}
 function qOf(m){return Math.floor(m/3)+1;}
@@ -26,7 +26,7 @@ const fARS=(v,c=false,s=false)=>{if(v==null||isNaN(v))return'—';const a=Math.a
 const fPct=(v)=>v==null||isNaN(v)?'—':`${(v*100).toFixed(1)}%`;
 const fNum=(v)=>v==null||isNaN(v)?'—':Math.round(v).toLocaleString('es-AR');
 const avg=(a)=>a.length?a.reduce((s,v)=>s+v,0)/a.length:0;
-
+ 
 const DP=[
   {id:'free',name:'Gratis',price:0,duration:'mensual',varCost:120,varCostPaid:0,aiCost:350,isPaid:false},
   {id:'pers-m',name:'Personal Solo Mensual',price:4990,duration:'mensual',varCost:180,varCostPaid:220,aiCost:750,isPaid:true},
@@ -54,7 +54,7 @@ const DFC=[
 const DPART=[
   {id:'p1',name:'Socio A',share:45},{id:'p2',name:'Socio B',share:35},{id:'p3',name:'Inversor',share:20},
 ];
-
+ 
 const PROFILES={
   finanzas:{i:{free:90,'pers-m':28,'pers-t':12,'pareja-m':18,'pareja-t':8,'inv-m':4,'inv-t':2,'duo-m':3,'duo-t':2},g:1.18,ads:450000,ct:{org:1,ads:1,inf:1}},
   inversiones:{i:{free:60,'pers-m':12,'pers-t':5,'pareja-m':8,'pareja-t':4,'inv-m':20,'inv-t':10,'duo-m':14,'duo-t':7},g:1.15,ads:700000,ct:{org:0.9,ads:1.3,inf:0.8}},
@@ -73,7 +73,7 @@ const BASE_MIX={
   'duo-m':{organic:0.30,ads:0.30,'inf-fer':0.16,'inf-milon':0.14,'inf-sergio':0.06,'inf-lucia':0.04},
   'duo-t':{organic:0.35,ads:0.25,'inf-fer':0.16,'inf-milon':0.14,'inf-sergio':0.06,'inf-lucia':0.04},
 };
-
+ 
 function genForecast(plans,channels,months,profileKey='finanzas'){
   const p=PROFILES[profileKey]||PROFILES.finanzas;
   const fc={};
@@ -89,12 +89,12 @@ function genForecast(plans,channels,months,profileKey='finanzas'){
   });
   return fc;
 }
-
+ 
 function makeStrategy(id,name,plans,channels,months,profileKey='finanzas'){
   const p=PROFILES[profileKey]||PROFILES.finanzas;
   return{id,name,forecast:genForecast(plans,channels,months,profileKey),monthlyAds:Array(months).fill(p.ads),milestones:{}};
 }
-
+ 
 function project({plans,fixedCosts,influencers,mpFees,partners,scenario,sy,sm,hm,strategy,paymentStatus}){
   const mult=SMULT[scenario]||1;
   const channels=['organic','ads',...influencers.map(i=>i.id)];
@@ -184,7 +184,7 @@ function project({plans,fixedCosts,influencers,mpFees,partners,scenario,sy,sm,hm
   const pb=arpuL>0&&cacAA?cacAA/(arpuL*(gmA||0.01)):null;
   return{monthly,cohorts,channels,summary:{tot,last,be,minCA,capitalNeeded:Math.max(0,-minCA),bCash,wCash,arpuL,cacAA,gmA,pb,burnBE:be?monthly.slice(0,be.m).reduce((s,m)=>s+Math.min(0,m.cashFlow),0):monthly.reduce((s,m)=>s+Math.min(0,m.cashFlow),0)}};
 }
-
+ 
 function aggregateBy(monthly,view){
   if(view==='monthly')return monthly.map(m=>({...m,pKey:m.label,pLabel:m.label}));
   const g={};
@@ -208,7 +208,7 @@ function aggregateBy(monthly,view){
       grossMarginAmount:sum('grossMarginAmount'),netResult:sum('netResult')};
   });
 }
-
+ 
 // === UI ATOMS ===
 const Card=({children,className='',tone})=>{
   const tc=tone==='warning'?'border-amber-200 bg-amber-50/40':tone==='negative'?'border-rose-200 bg-rose-50/30':tone==='positive'?'border-emerald-200 bg-emerald-50/30':'border-stone-200 bg-white';
@@ -281,7 +281,7 @@ const VSwitcher=({view,setView})=>(
     ))}
   </div>
 );
-
+ 
 // === HEADER + NAV ===
 function Header({scenario,setScenario,strategies,activeId,setActiveId,onExport,saving,lastSaved,onLogout,userEmail}){
   return(
@@ -350,7 +350,7 @@ function Nav({current,setTab}){
     </nav>
   );
 }
-
+ 
 // === DASHBOARD ===
 function DashboardTab({proj,plans,influencers,strategy,scenario,view,setView}){
   const {monthly,summary}=proj;
@@ -464,7 +464,7 @@ function DashboardTab({proj,plans,influencers,strategy,scenario,view,setView}){
     </div>
   );
 }
-
+ 
 // === FORECAST TAB ===
 function ForecastTab({strategy,updateStrategy,plans,influencers,hm,sy,sm}){
   const channels=useMemo(()=>[{id:'organic',l:'Orgánico'},{id:'ads',l:'Ads'},...influencers.map(i=>({id:i.id,l:i.name}))]  ,[influencers]);
@@ -615,7 +615,7 @@ function ForecastTab({strategy,updateStrategy,plans,influencers,hm,sy,sm}){
     </div>
   );
 }
-
+ 
 // === STRATEGIES TAB ===
 function StrategiesTab({strategies,setStrategies,activeId,setActiveId,plans,influencers,hm}){
   const channels=['organic','ads',...influencers.map(i=>i.id)];
@@ -671,7 +671,7 @@ function StrategiesTab({strategies,setStrategies,activeId,setActiveId,plans,infl
     </div>
   );
 }
-
+ 
 // === COMPARATOR TAB ===
 function ComparatorTab({projByStrat,strategies}){
   const COLORS=['#4f46e5','#0891b2','#059669','#d97706','#dc2626','#7c3aed'];
@@ -779,7 +779,7 @@ function ComparatorTab({projByStrat,strategies}){
     </div>
   );
 }
-
+ 
 // === PLANS TAB ===
 function PlansTab({plans,setPlans,proj}){
   const last=proj.summary.last;
@@ -840,7 +840,7 @@ function PlansTab({plans,setPlans,proj}){
     </div>
   );
 }
-
+ 
 // === COSTS TAB ===
 function CostsTab({fixedCosts,setFixedCosts,mpFees,setMpFees}){
   const total=fixedCosts.reduce((s,c)=>s+c.amount,0);
@@ -873,7 +873,7 @@ function CostsTab({fixedCosts,setFixedCosts,mpFees,setMpFees}){
     </div>
   );
 }
-
+ 
 // === INFLUENCERS TAB ===
 function InfluencersTab({influencers,setInfluencers,proj,paymentStatus,setPaymentStatus}){
   const [sub,setSub]=useState('config');
@@ -1002,7 +1002,7 @@ function InfluencersTab({influencers,setInfluencers,proj,paymentStatus,setPaymen
     </div>
   );
 }
-
+ 
 // === MILESTONES TAB ===
 function MilestonesTab({strategy,updateStrategy,proj,influencers,sy,sm,hm}){
   const quarters=useMemo(()=>{
@@ -1071,7 +1071,7 @@ function MilestonesTab({strategy,updateStrategy,proj,influencers,sy,sm,hm}){
     </div>
   );
 }
-
+ 
 // === RESULTS TAB ===
 function ResultsTab({proj,view,setView}){
   const periods=useMemo(()=>aggregateBy(proj.monthly,view),[proj.monthly,view]);
@@ -1128,7 +1128,7 @@ function ResultsTab({proj,view,setView}){
     </Card>
   );
 }
-
+ 
 // === PARTNERS TAB ===
 function PartnersTab({partners,setPartners,proj}){
   const {monthly}=proj;const tot12=monthly.reduce((s,m)=>s+m.netResult,0);
@@ -1178,7 +1178,7 @@ function PartnersTab({partners,setPartners,proj}){
     </div>
   );
 }
-
+ 
 // === CONFIG TAB ===
 function ConfigTab({sy,setSY,sm,setSM,hm,setHM,exportCSV,exportJSON,importJSON,resetAll,resetStrategies,resetPS}){
   const fileRef=useRef(null);
@@ -1240,7 +1240,7 @@ function ConfigTab({sy,setSY,sm,setSM,hm,setHM,exportCSV,exportJSON,importJSON,r
     </div>
   );
 }
-
+ 
 // === EXPORT HELPERS ===
 function buildCSV(monthly,plans,influencers){
   let c='P&L MENSUAL\nMes,Activos,Pagos,Facturación,Comisión MP,Comisiones Infl.,Ingreso Caja,Costos Var.,Publicidad,Costos Fijos,Flujo Caja,Caja Acum.,Devengado,MRR,ARR,Margen Bruto,Resultado Neto\n';
@@ -1249,7 +1249,7 @@ function buildCSV(monthly,plans,influencers){
 }
 function dlCSV(monthly,plans,influencers){const b=new Blob([buildCSV(monthly,plans,influencers)],{type:'text/csv;charset=utf-8;'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=`profitlab_${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(u);}
 function dlJSON(state){const b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=`profitlab_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(u);}
-
+ 
 // === APP ROOT ===
 // === LOGIN SCREEN ===
 function LoginScreen(){
@@ -1259,7 +1259,7 @@ function LoginScreen(){
   const [loading,setLoading]=useState(false);
   const [msg,setMsg]=useState(null);
   const [err,setErr]=useState(null);
-
+ 
   const handle=async(e)=>{
     e.preventDefault();setLoading(true);setErr(null);setMsg(null);
     if(mode==='login'){
@@ -1276,7 +1276,7 @@ function LoginScreen(){
     }
     setLoading(false);
   };
-
+ 
   return(
     <div className="min-h-screen bg-stone-50 flex items-center justify-center p-6">
       <div className="bg-white border border-stone-200 rounded-2xl p-8 w-full max-w-sm shadow-sm">
@@ -1317,15 +1317,15 @@ function LoginScreen(){
     </div>
   );
 }
-
+ 
 // === APP ROOT ===
 const DFLT_CHANNELS=['organic','ads',...DI.map(i=>i.id)];
-
+ 
 function buildDefaultState(){
   const strategies=[makeStrategy('strat-1','Finanzas personales',DP,DFLT_CHANNELS,12,'finanzas')];
   return{plans:DP,fixedCosts:DFC,influencers:DI,partners:DPART,mpFees:{variablePct:5.99,fixedAmount:150},sy:2026,sm:6,hm:12,scenario:'base',view:'monthly',tab:'dashboard',strategies,activeId:'strat-1',paymentStatus:{}};
 }
-
+ 
 export default function App(){
   const [session,setSession]=useState(undefined);
   const [st,setSt]=useState(null);
@@ -1334,19 +1334,19 @@ export default function App(){
   const [lastSaved,setLastSaved]=useState(null);
   const [loadingData,setLoadingData]=useState(false);
   const saveTimer=useRef(null);
-
+ 
   useEffect(()=>{
     supabase.auth.getSession().then(({data:{session}})=>setSession(session??null));
     const{data:{subscription}}=supabase.auth.onAuthStateChange((_,s)=>setSession(s??null));
     return()=>subscription.unsubscribe();
   },[]);
-
+ 
   useEffect(()=>{
     if(session===undefined)return;
     if(!session){setSt(null);setWorkspaceId(null);return;}
     loadWorkspace(session.user.id);
   },[session?.user?.id]);
-
+ 
   const loadWorkspace=async(userId)=>{
     setLoadingData(true);
     const{data,error}=await supabase.from('profitlab_workspaces').select('id,app_state').eq('owner_id',userId).maybeSingle();
@@ -1363,7 +1363,7 @@ export default function App(){
     }
     setLoadingData(false);
   };
-
+ 
   const scheduleSave=useCallback((newState,wId)=>{
     if(!wId)return;
     clearTimeout(saveTimer.current);
@@ -1375,7 +1375,7 @@ export default function App(){
       else console.error('Save error:',error);
     },1500);
   },[]);
-
+ 
   const set=useCallback((patch)=>{
     setSt(prev=>{
       if(!prev)return prev;
@@ -1384,13 +1384,34 @@ export default function App(){
       return next;
     });
   },[workspaceId,scheduleSave]);
-
+ 
   const handleLogout=async()=>{
     clearTimeout(saveTimer.current);
     await supabase.auth.signOut();
     setSt(null);setWorkspaceId(null);setLastSaved(null);
   };
-
+ 
+  // ── TODOS los hooks ANTES de cualquier return condicional (Rules of Hooks) ──
+  const activeStrategy=useMemo(()=>{
+    if(!st?.strategies)return null;
+    return st.strategies.find(s=>s.id===st.activeId)||st.strategies[0]||null;
+  },[st?.strategies,st?.activeId]);
+ 
+  const activeProj=useMemo(()=>{
+    if(!st||!activeStrategy)return null;
+    const{plans,fixedCosts,influencers,mpFees,partners,scenario,sy,sm,hm,paymentStatus}=st;
+    return project({plans,fixedCosts,influencers,mpFees,partners,scenario,sy,sm,hm,paymentStatus,strategy:activeStrategy});
+  },[st,activeStrategy]);
+ 
+  const projByStrat=useMemo(()=>{
+    if(!st?.strategies)return {};
+    const{plans,fixedCosts,influencers,mpFees,partners,scenario,sy,sm,hm,paymentStatus}=st;
+    const args={plans,fixedCosts,influencers,mpFees,partners,scenario,sy,sm,hm,paymentStatus};
+    const r={};st.strategies.forEach(s=>{r[s.id]=project({...args,strategy:s});});return r;
+  },[st]);
+  // ── Fin hooks ──────────────────────────────────────────────────────────────
+ 
+  // Ahora sí los returns condicionales
   if(session===undefined||loadingData){
     return(
       <div className="min-h-screen bg-stone-50 flex items-center justify-center">
@@ -1401,30 +1422,25 @@ export default function App(){
       </div>
     );
   }
-
+ 
   if(!session)return (<LoginScreen/>);
-  if(!st)return (
+  if(!st||!activeProj)return (
     <div className="min-h-screen bg-stone-50 flex items-center justify-center">
       <div className="text-sm text-stone-500">Preparando tu workspace...</div>
     </div>
   );
-
+ 
   const{plans,fixedCosts,influencers,partners,mpFees,sy,sm,hm,scenario,view,tab,strategies,activeId,paymentStatus}=st;
-  const activeStrategy=strategies.find(s=>s.id===activeId)||strategies[0];
-
-  const projArgs={plans,fixedCosts,influencers,mpFees,partners,scenario,sy,sm,hm,paymentStatus};
-  const activeProj=useMemo(()=>project({...projArgs,strategy:activeStrategy}),[JSON.stringify(projArgs),activeStrategy?.id,activeStrategy?.forecast,activeStrategy?.monthlyAds]);
-  const projByStrat=useMemo(()=>{const r={};strategies.forEach(s=>{r[s.id]=project({...projArgs,strategy:s});});return r;},[JSON.stringify(projArgs),strategies.map(s=>s.id).join(',')]);
-
+ 
   const updateActiveStrategy=(s)=>set({strategies:strategies.map(x=>x.id===activeId?s:x)});
-
+ 
   const exportCSV=()=>dlCSV(activeProj.monthly,plans,influencers);
   const exportJSON=()=>dlJSON(st);
   const importJSON=(data)=>{const next={...buildDefaultState(),...data};setSt(next);scheduleSave(next,workspaceId);};
   const resetAll=()=>{const next=buildDefaultState();setSt(next);scheduleSave(next,workspaceId);};
   const resetStrategies=()=>set({strategies:strategies.map(s=>{const u={};plans.forEach(p=>{u[p.id]={};['organic','ads',...influencers.map(i=>i.id)].forEach(c=>{u[p.id][c]=Array(hm).fill(0);});});return{...s,forecast:u};})});
   const resetPS=()=>set({paymentStatus:{}});
-
+ 
   return(
     <div className="min-h-screen bg-stone-50" style={{fontFamily:"'Inter',system-ui,-apple-system,sans-serif"}}>
       <Header scenario={scenario} setScenario={v=>set({scenario:v})} strategies={strategies} activeId={activeId} setActiveId={v=>set({activeId:v})} onExport={exportCSV} saving={saving} lastSaved={lastSaved} onLogout={handleLogout} userEmail={session?.user?.email}/>
