@@ -70,6 +70,18 @@ function scenVars(scenario){
   o.mix={};Object.keys(SCEN_MIX).forEach(m=>{o.mix[m]=SCEN_MIX[m][k];});
   return o;
 }
+// Construye los 3 escenarios editables (semilla = números del Excel)
+function buildScenarios(){
+  return{conservador:scenVars('conservador'),base:scenVars('base'),optimista:scenVars('optimista')};
+}
+// Presupuesto de ads total por mes (editable). Default del Excel.
+function buildDefaultAdsBudget(){return[...ADS_BUDGET];}
+// Resuelve los supuestos activos: usa los editables del state si existen, sino el default
+function resolveVars(scenario,scenarios){
+  const base=scenVars(scenario);
+  const sv=scenarios&&scenarios[scenario]?scenarios[scenario]:base;
+  return{...base,...sv,mix:{...base.mix,...(sv.mix||{})}};
+}
  
 // ============ PLANES (precios reales del roadmap) ============
 const DEFAULT_PLANS=[
@@ -153,8 +165,9 @@ const DEFAULT_MILESTONES=[
 ];
  
 // ============ MOTOR FINANCIERO (cohortes mensuales por plan) ============
-function project({plans,costs,influencers,channels,campaigns,referral,mpFees,scenario,sy,sm,hm,inflation,fx,personalLaunch}){
-  const sv=scenVars(scenario);
+function project({plans,costs,influencers,channels,campaigns,referral,mpFees,scenario,scenarios,adsBudget,sy,sm,hm,inflation,fx,personalLaunch}){
+  const sv=resolveVars(scenario,scenarios);
+  const adsArr=adsBudget&&adsBudget.length?adsBudget:ADS_BUDGET;
   const readerPlannedMonth=2;
   const readerActiveMonth=readerPlannedMonth+(sv.readerDelay||0);
   // Personal launch: 8 (M09), 11 (M12 postergado), o 999 (no lanzar)
@@ -182,9 +195,13 @@ function project({plans,costs,influencers,channels,campaigns,referral,mpFees,sce
     let orgBase=sv.orgM1*Math.pow(1+sv.orgGrowth,t);
     if(personalLive)orgBase*=sv.orgPersMult;
     const regOrganic=orgBase;
-    const regMeta=metaBudget(t)/sv.cpcMeta*sv.convClickReg;
-    const regTiktok=tiktokBudget(t)/sv.cpcTiktok*sv.convClickReg;
-    const regYoutube=youtubeBudget(t)/sv.cpmYoutube*1000;
+    // El presupuesto de ads editable escala proporcionalmente los canales pagos
+    const defTotal=ADS_BUDGET[Math.min(t,ADS_BUDGET.length-1)]||1;
+    const adsTotal=adsArr[Math.min(t,adsArr.length-1)]||0;
+    const adsScale=defTotal>0?adsTotal/defTotal:1;
+    const regMeta=(metaBudget(t)*adsScale)/sv.cpcMeta*sv.convClickReg;
+    const regTiktok=(tiktokBudget(t)*adsScale)/sv.cpcTiktok*sv.convClickReg;
+    const regYoutube=(youtubeBudget(t)*adsScale)/sv.cpmYoutube*1000;
     // influencers: registros estimados desde expectedPayments / convActPaid (aprox)
     let regInfluencers=0,infExpectedPayments=0;
     influencers.forEach(inf=>{
@@ -304,7 +321,7 @@ function project({plans,costs,influencers,channels,campaigns,referral,mpFees,sce
     });
     const varCostUser=(activeTotal+freeActiveCost)*sv.varCostUsd*fx;
     const mpFee=cashCollected*(mpFees.variablePct/100);
-    const adsCost=ADS_BUDGET[Math.min(t,ADS_BUDGET.length-1)]||0;
+    const adsCost=adsArr[Math.min(t,adsArr.length-1)]||0;
     const cogs=varCostUser+mpFee;
     const grossProfit=mrr-cogs;
     const grossMargin=mrr>0?grossProfit/mrr:0;
@@ -702,9 +719,9 @@ function ForecastActualsTab({proj,state,set,actuals,saveActual,closeMonth,reopen
   const tabs=[{id:'forecast',label:'Forecast mensual',icon:LineIcon},{id:'real',label:'Carga real / cierre',icon:Edit3},{id:'vs',label:'Forecast vs Real',icon:GitCompare},{id:'sens',label:'Sensibilidad',icon:Zap}];
   return(
     <div>
-      <SectionTitle icon={LineIcon} title="Forecast & Actuals" desc="Proyectá, cargá la realidad cuando salgas al mercado, y compará. El forecast usa el escenario activo; los datos reales se cargan y cierran mes a mes."/>
+      <SectionTitle icon={LineIcon} title="Forecast & Actuals" desc="Proyectá editando los supuestos, cargá la realidad cuando salgas al mercado, y compará. Los supuestos del forecast son editables por escenario y conviven con la carga de actuals."/>
       <SubTabs tabs={tabs} active={sub} onChange={setSub}/>
-      {sub==='forecast'&&<ForecastView proj={proj} state={state}/>}
+      {sub==='forecast'&&<ForecastView proj={proj} state={state} set={set}/>}
       {sub==='real'&&<ActualsView proj={proj} state={state} actuals={actuals} saveActual={saveActual} closeMonth={closeMonth} reopenMonth={reopenMonth}/>}
       {sub==='vs'&&<ForecastVsReal proj={proj} state={state} actuals={actuals}/>}
       {sub==='sens'&&<SensitivityView state={state} baseProj={proj}/>}
@@ -712,8 +729,33 @@ function ForecastActualsTab({proj,state,set,actuals,saveActual,closeMonth,reopen
   );
 }
  
-function ForecastView({proj,state}){
+function ForecastView({proj,state,set}){
   const m=proj.monthly;
+  const[showAssumptions,setShowAssumptions]=useState(true);
+  const[showBudget,setShowBudget]=useState(false);
+  const sc=state.scenario;
+  const scenarios=state.scenarios||buildScenarios();
+  const sv=scenarios[sc]||scenVars(sc);
+  // editar un supuesto del escenario activo
+  const updVar=(key,val)=>{
+    const next={...scenarios,[sc]:{...scenarios[sc],[key]:val}};
+    set({scenarios:next});
+  };
+  const updMix=(key,val)=>{
+    const cur=scenarios[sc]||scenVars(sc);
+    const next={...scenarios,[sc]:{...cur,mix:{...(cur.mix||scenVars(sc).mix),[key]:val}}};
+    set({scenarios:next});
+  };
+  const resetScenario=()=>{set({scenarios:{...scenarios,[sc]:scenVars(sc)}});};
+  // ads budget editable
+  const adsBudget=state.adsBudget&&state.adsBudget.length?state.adsBudget:buildDefaultAdsBudget();
+  const updAds=(idx,val)=>{const next=[...adsBudget];next[idx]=val;set({adsBudget:next});};
+  // agrupar supuestos
+  const groups={};SCENARIO_VARS.forEach(v=>{(groups[v.grp]=groups[v.grp]||[]).push(v);});
+  const mixLabels={invM:'Inv Mensual',invQ:'Inv Trimestral',invA:'Inv Anual',persSoloM:'Pers Solo Mensual',persSoloQ:'Pers Solo Trim',persParejaM:'Pers Pareja Mensual',persParejaQ:'Pers Pareja Trim',duoM:'Dúo Mensual',duoQ:'Dúo Trimestral',duoA:'Dúo Anual'};
+  const fmtVal=(v,fmt)=>fmt==='pct'?v*100:v;
+  const parseVal=(raw,fmt)=>fmt==='pct'?raw/100:raw;
+ 
   const rows=[
     {k:'regTotal',label:'Registros totales',fmt:fNum},
     {k:'activations',label:'Activaciones',fmt:fNum},
@@ -730,24 +772,91 @@ function ForecastView({proj,state}){
     {k:'ltvCac',label:'LTV/CAC',fmt:fX},
   ];
   return(
-    <Card className="p-0 overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="w-full text-xs">
-          <thead><tr className="border-b border-stone-200 bg-stone-50">
-            <th className="text-left p-2.5 font-medium text-stone-500 sticky left-0 bg-stone-50 z-10 min-w-[150px]">Métrica</th>
-            {m.map(x=>(<th key={x.t} className={`text-right p-2.5 font-medium whitespace-nowrap ${x.readerActive?'text-stone-700':'text-stone-400'}`}>{x.label}{x.t===proj.readerActiveMonth&&<div className="text-[9px] text-emerald-600">lector</div>}{x.t===proj.persLaunch&&<div className="text-[9px] text-purple-600">Personal</div>}</th>))}
-          </tr></thead>
-          <tbody>
-            {rows.map(r=>(
-              <tr key={r.k} className="border-b border-stone-100 hover:bg-stone-50">
-                <td className={`p-2.5 sticky left-0 bg-white z-10 ${r.bold?'font-medium text-stone-900':'text-stone-600'}`}>{r.label}</td>
-                {m.map(x=>(<td key={x.t} className={`text-right p-2.5 tabular-nums ${r.bold?'font-medium':''} ${(r.k==='opResult'||r.k==='cumCash')&&x[r.k]<0?'text-rose-600':''}`}>{r.fmt(x[r.k])}</td>))}
-              </tr>
+    <div className="space-y-4">
+      {/* Banner */}
+      <Card tone="accent" className="p-3 flex items-start gap-2 text-xs text-stone-600">
+        <Info size={14} className="mt-0.5 shrink-0"/>
+        <div>Estás editando los supuestos del escenario <span className="font-medium capitalize text-stone-800">{sc}</span> (cambialo en el header). Cada cambio recalcula el forecast al instante y se guarda solo. Los precios se editan en Revenue & Plans, los costos en Costos & Caja, los influencers en Growth.</div>
+      </Card>
+ 
+      {/* Supuestos editables */}
+      <Card className="overflow-hidden">
+        <button onClick={()=>setShowAssumptions(!showAssumptions)} className="w-full p-3 flex items-center justify-between hover:bg-stone-50">
+          <span className="text-sm font-medium text-stone-900 flex items-center gap-2"><Edit3 size={14}/>Supuestos del forecast · escenario {sc}</span>
+          <span className="flex items-center gap-2"><ConfirmBtn onConfirm={resetScenario} label="Reset escenario" icon={Eraser} confirmText="¿Volver al Excel?"/>{showAssumptions?<ChevronDown size={16}/>:<ChevronRight size={16}/>}</span>
+        </button>
+        {showAssumptions&&(
+          <div className="border-t border-stone-100 p-4 space-y-4">
+            {Object.entries(groups).map(([grp,vars])=>(
+              <div key={grp}>
+                <div className="text-[11px] font-semibold text-stone-400 uppercase tracking-wide mb-2">{grp}</div>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  {vars.map(v=>(
+                    <div key={v.key}>
+                      <label className="text-[11px] text-stone-500 block mb-0.5">{v.label}</label>
+                      <NI value={fmtVal(sv[v.key]??v.base,v.fmt)} onChange={val=>updVar(v.key,parseVal(val,v.fmt))} suffix={v.fmt==='pct'?'%':v.fmt==='money'||v.fmt==='usd'?'$':v.fmt==='ratio'?'x':''} step={v.fmt==='pct'?0.1:v.fmt==='ratio'?0.05:1}/>
+                    </div>
+                  ))}
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
-      </div>
-    </Card>
+            <div>
+              <div className="text-[11px] font-semibold text-stone-400 uppercase tracking-wide mb-2">Mix de planes (% de nuevos pagos)</div>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                {Object.keys(mixLabels).map(mk=>(
+                  <div key={mk}>
+                    <label className="text-[11px] text-stone-500 block mb-0.5">{mixLabels[mk]}</label>
+                    <NI value={((sv.mix||scenVars(sc).mix)[mk]||0)*100} onChange={val=>updMix(mk,val/100)} suffix="%"/>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </Card>
+ 
+      {/* Presupuesto de ads editable */}
+      <Card className="overflow-hidden">
+        <button onClick={()=>setShowBudget(!showBudget)} className="w-full p-3 flex items-center justify-between hover:bg-stone-50">
+          <span className="text-sm font-medium text-stone-900 flex items-center gap-2"><Megaphone size={14}/>Presupuesto de ads por mes (total)</span>
+          {showBudget?<ChevronDown size={16}/>:<ChevronRight size={16}/>}
+        </button>
+        {showBudget&&(
+          <div className="border-t border-stone-100 p-4">
+            <p className="text-xs text-stone-500 mb-3">El total de ads escala proporcionalmente los canales pagos (Meta/TikTok/YouTube) para calcular registros y CAC.</p>
+            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">
+              {m.map((x,i)=>(
+                <div key={i}>
+                  <label className="text-[11px] text-stone-500 block mb-0.5">{x.label}</label>
+                  <NI value={adsBudget[i]??0} onChange={val=>updAds(i,val)} step={50000}/>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </Card>
+ 
+      {/* Tabla de output */}
+      <Card className="p-0 overflow-hidden">
+        <div className="px-4 py-2.5 border-b border-stone-100 text-sm font-medium text-stone-900">Forecast resultante ({m.length} meses)</div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs">
+            <thead><tr className="border-b border-stone-200 bg-stone-50">
+              <th className="text-left p-2.5 font-medium text-stone-500 sticky left-0 bg-stone-50 z-10 min-w-[150px]">Métrica</th>
+              {m.map(x=>(<th key={x.t} className={`text-right p-2.5 font-medium whitespace-nowrap ${x.readerActive?'text-stone-700':'text-stone-400'}`}>{x.label}{x.t===proj.readerActiveMonth&&<div className="text-[9px] text-emerald-600">lector</div>}{x.t===proj.persLaunch&&<div className="text-[9px] text-purple-600">Personal</div>}</th>))}
+            </tr></thead>
+            <tbody>
+              {rows.map(r=>(
+                <tr key={r.k} className="border-b border-stone-100 hover:bg-stone-50">
+                  <td className={`p-2.5 sticky left-0 bg-white z-10 ${r.bold?'font-medium text-stone-900':'text-stone-600'}`}>{r.label}</td>
+                  {m.map(x=>(<td key={x.t} className={`text-right p-2.5 tabular-nums ${r.bold?'font-medium':''} ${(r.k==='opResult'||r.k==='cumCash')&&x[r.k]<0?'text-rose-600':''}`}>{r.fmt(x[r.k])}</td>))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+    </div>
   );
 }
  
@@ -873,7 +982,7 @@ function SensitivityView({state,baseProj}){
   // Comparativa rápida de escenarios completos
   const scenarios=['conservador','base','optimista'];
   const rows=scenarios.map(sc=>{
-    const p=project({...state,scenario:sc,costs:state.costs,influencers:state.influencers,channels:state.channels,campaigns:state.campaigns,referral:state.referral,mpFees:state.mpFees,inflation:state.inflation,fx:state.fx,personalLaunch:state.personalLaunch,plans:state.plans});
+    const p=project({...state,scenario:sc,scenarios:state.scenarios,adsBudget:state.adsBudget,costs:state.costs,influencers:state.influencers,channels:state.channels,campaigns:state.campaigns,referral:state.referral,mpFees:state.mpFees,inflation:state.inflation,fx:state.fx,personalLaunch:state.personalLaunch,plans:state.plans});
     const m12=p.monthly[11]||{};
     return{sc,active12:m12.activeTotal,mrr12:m12.mrr,cumCash12:m12.cumCash,cac:avg(p.monthly.slice(0,12).map(x=>x.cac)),ltvCac:avg(p.monthly.slice(0,12).map(x=>x.ltvCac)),payback:avg(p.monthly.slice(0,12).map(x=>x.payback)),be:p.beMonth,capital:p.summary.capitalNeeded};
   });
@@ -1797,6 +1906,7 @@ function buildDefaultState(){
   return{
     sy:2026,sm:7,hm:24,scenario:'base',view:'monthly',productFilter:'all',tab:'dashboard',
     inflation:0.025,fx:1500,personalLaunch:'yes',
+    scenarios:buildScenarios(),adsBudget:buildDefaultAdsBudget(),
     plans:DEFAULT_PLANS,influencers:DEFAULT_INFLUENCERS,channels:DEFAULT_CHANNELS,costs:DEFAULT_COSTS,
     campaigns:[],referral:{enabled:false,referrerBenefit:'1 mes free Inversión',referredBenefit:'20% off primer mes',durationMonths:1,costPerReferral:15000},
     mpFees:{variablePct:6.29},
@@ -1873,7 +1983,7 @@ export default function App(){
   const set=useCallback((patch)=>setState(s=>({...s,...patch})),[]);
  
   // Proyección
-  const proj=useMemo(()=>project({plans:state.plans,costs:state.costs,influencers:state.influencers,channels:state.channels,campaigns:state.campaigns,referral:state.referral,mpFees:state.mpFees,scenario:state.scenario,sy:state.sy,sm:state.sm,hm:state.hm,inflation:state.inflation,fx:state.fx,personalLaunch:state.personalLaunch}),[state]);
+  const proj=useMemo(()=>project({plans:state.plans,costs:state.costs,influencers:state.influencers,channels:state.channels,campaigns:state.campaigns,referral:state.referral,mpFees:state.mpFees,scenario:state.scenario,scenarios:state.scenarios,adsBudget:state.adsBudget,sy:state.sy,sm:state.sm,hm:state.hm,inflation:state.inflation,fx:state.fx,personalLaunch:state.personalLaunch}),[state]);
  
   // Actuals handlers
   const saveActual=useCallback(async(mk,data)=>{
